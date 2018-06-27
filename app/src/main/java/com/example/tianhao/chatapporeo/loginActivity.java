@@ -35,12 +35,6 @@ public class loginActivity extends AppCompatActivity {
             logIn();
         }
 
-//        String test = "fogset@b.com";
-//        String[] output = test.split("\\.");
-//
-       // Log.i("after split is " , "dfsdfsdfds");
-
-//        FirebaseDatabase.getInstance().getReference().child("users").child("fogset@b").child("messages").setValue("eat");
     }
     public  void loginButton( View view){
         email = emailEdit.getText().toString();
@@ -57,11 +51,9 @@ public class loginActivity extends AppCompatActivity {
                                 // Sign in success, update UI with the signed-in user's information
                                 Toast.makeText(loginActivity.this, "signInWithEmail:success",Toast.LENGTH_SHORT).show();
                                 logIn();
-
                             } else {
                                 // If sign in fails, display a message to the user.
                                 Toast.makeText(loginActivity.this, "Authentication failed",Toast.LENGTH_SHORT).show();
-
                             }
                         }
                     });
@@ -86,19 +78,13 @@ public class loginActivity extends AppCompatActivity {
                             } else {
                                 // If sign in fails, display a message to the user.
                                 Toast.makeText(loginActivity.this, "Authentication failed",Toast.LENGTH_SHORT).show();
-
                             }
                         }
                     });
         }
-
-
     }
-
-
     public void logIn(){
         Intent intent = new Intent(this, UserListActivity.class);
-        intent.putExtra("age", 28);
         startActivity(intent);
     }
 }

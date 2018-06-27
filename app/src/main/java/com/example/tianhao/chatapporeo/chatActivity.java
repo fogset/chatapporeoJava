@@ -25,11 +25,11 @@ public class chatActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     EditText chatMessage;
     String receiveUser, currentEmail;
-    ArrayList<String> messages = new ArrayList<>();
+    ArrayList<String> receiverMessages = new ArrayList<>();
     ArrayAdapter arrayAdapter;
     ListView chatListView;
     FirebaseUser currentUser;
-    String[] username;
+    String[] currentLogINUser,receiveLogInUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,40 +37,35 @@ public class chatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
         Intent intent = getIntent();
         receiveUser = intent.getStringExtra("username");
-        setTitle("Chat with "+ receiveUser);
-        chatMessage = (EditText)findViewById(R.id.chatEditText);
-        chatListView = (ListView)findViewById(R.id.messageListView);
+
+        chatMessage = findViewById(R.id.chatEditText);
+        chatListView = findViewById(R.id.messageListView);
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
         currentEmail = currentUser.getEmail();
-        username = currentEmail.split("\\.");
+        currentLogINUser = currentEmail.split("\\.");
+        receiveLogInUser = receiveUser.split("\\.");
+        setTitle("Login as "+ currentEmail + " Chat with "+ receiveUser);
 
 
-        FirebaseDatabase.getInstance().getReference().child("users").child(username[0]).child("messages").addListenerForSingleValueEvent(new ValueEventListener() {
+
+        FirebaseDatabase.getInstance().getReference().child("users").child(receiveLogInUser[0]).child("messages").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot messageFireBase : dataSnapshot.getChildren()){
                     String messageReceived = String.valueOf(messageFireBase.getValue());
                     if (messageReceived != null){
-                        messages.add(messageReceived);
+                        receiverMessages.add(messageReceived);
                     }
                     Log.i("receive message" , messageReceived);
                 }
-//                String meesageReceived = String.valueOf(dataSnapshot.getValue());
-//                messages.add(meesageReceived);
             }
-
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
+            public void onCancelled(@NonNull DatabaseError databaseError) { }
         });
 
-
-        arrayAdapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1,messages);
+        arrayAdapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1,receiverMessages);
         chatListView.setAdapter(arrayAdapter);
-
-
 
     }
     public void sendChat(View view){
@@ -79,13 +74,12 @@ public class chatActivity extends AppCompatActivity {
 
         String stringChatMessage = chatMessage.getText().toString();
         if (stringChatMessage.matches("")){
-            Toast.makeText(this, "please enter something",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "You did not enter a message",Toast.LENGTH_SHORT).show();
         }else{
-            messages.add(currentEmail + " said: " + chatMessage.getText().toString());
+            receiverMessages.add(currentEmail + " said: " + chatMessage.getText().toString());
             arrayAdapter.notifyDataSetChanged();
+            FirebaseDatabase.getInstance().getReference().child("users").child(receiverUserEmail[0]).child("messages").setValue(receiverMessages);
         }
-        FirebaseDatabase.getInstance().getReference().child("users").child(username[0]).child("messages").setValue(messages);
-        FirebaseDatabase.getInstance().getReference().child("users").child(receiverUserEmail[0]).child("messages").setValue(messages);
         chatMessage.getText().clear();
     }
 }
