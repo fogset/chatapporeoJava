@@ -21,7 +21,7 @@ class UserListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_list)
 
-        setTitle("User List")
+        setTitle("Friends List")
 
         val currentFirebaseUser = FirebaseAuth.getInstance().currentUser
         var currentEmail = currentFirebaseUser!!.email

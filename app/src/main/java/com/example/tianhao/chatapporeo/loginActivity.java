@@ -32,7 +32,7 @@ public class loginActivity extends AppCompatActivity {
         passwordEdit = findViewById(R.id.passwordEditText);
 
         if(currentUser != null){
-
+            logIn();
         }
 
 //        String test = "fogset@b.com";
