@@ -56,6 +56,7 @@ public class loginActivity extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 // Sign in success, update UI with the signed-in user's information
                                 Toast.makeText(loginActivity.this, "signInWithEmail:success",Toast.LENGTH_SHORT).show();
+                                logIn();
 
                             } else {
                                 // If sign in fails, display a message to the user.
@@ -81,6 +82,7 @@ public class loginActivity extends AppCompatActivity {
                                 String[] username = email.split("\\.");
                                 FirebaseDatabase.getInstance().getReference().child("users").child(username[0]).setValue(email);
                                 Toast.makeText(loginActivity.this, "createWithEmail:success",Toast.LENGTH_SHORT).show();
+                                logIn();
                             } else {
                                 // If sign in fails, display a message to the user.
                                 Toast.makeText(loginActivity.this, "Authentication failed",Toast.LENGTH_SHORT).show();
@@ -95,8 +97,8 @@ public class loginActivity extends AppCompatActivity {
 
 
     public void logIn(){
-        //Intent intent = new Intent(this, SecondActivity.class);
-        //intent.putExtra("age", 28);
-        //startActivity(intent);
+        Intent intent = new Intent(this, UserListActivity.class);
+        intent.putExtra("age", 28);
+        startActivity(intent);
     }
 }
