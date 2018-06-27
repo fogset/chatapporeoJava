@@ -21,10 +21,12 @@ class UserListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_list)
 
-        setTitle("Friends List")
 
         val currentFirebaseUser = FirebaseAuth.getInstance().currentUser
         var currentEmail = currentFirebaseUser!!.email
+        setTitle(currentEmail +"'s friends list")
+
+
 
         userListView = this.findViewById(R.id.userListView)
         val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, usersEmail)
