@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -76,10 +77,13 @@ public class chatActivity extends AppCompatActivity {
 
         String[]  receiverUserEmail = receiveUser.split("\\.");
 
-
-
-        messages.add(currentEmail + " said: " + chatMessage.getText().toString());
-        arrayAdapter.notifyDataSetChanged();
+        String stringChatMessage = chatMessage.getText().toString();
+        if (stringChatMessage.matches("")){
+            Toast.makeText(this, "please enter something",Toast.LENGTH_SHORT).show();
+        }else{
+            messages.add(currentEmail + " said: " + chatMessage.getText().toString());
+            arrayAdapter.notifyDataSetChanged();
+        }
         FirebaseDatabase.getInstance().getReference().child("users").child(username[0]).child("messages").setValue(messages);
         FirebaseDatabase.getInstance().getReference().child("users").child(receiverUserEmail[0]).child("messages").setValue(messages);
         chatMessage.getText().clear();
