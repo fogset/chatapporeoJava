@@ -5,13 +5,14 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.ListAdapter
 import android.widget.ListView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
-
+// this is Kotlin file to view friends list
 class UserListActivity : AppCompatActivity() {
 
     var userListView: ListView? = null
@@ -30,14 +31,12 @@ class UserListActivity : AppCompatActivity() {
 
         userListView = this.findViewById(R.id.userListView)
         val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, usersEmail)
-        userListView?.adapter = adapter
-
+        userListView?.adapter = adapter as ListAdapter?
+        //Read data From Firebase
         FirebaseDatabase.getInstance().getReference().child("users").addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(p0: DataSnapshot, p1: String?) {
                 val email = p0.child("email").value as String
-                if (email != currentEmail){
                     usersEmail.add(email)
-                }
                 //keys.add(p0.key!!)
                 adapter.notifyDataSetChanged()
             }

@@ -21,6 +21,9 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+
+
+//module 9 for chat with other people and module 11 use Firebase as Database save every chat into Firebase
 public class chatActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     EditText chatMessage;
@@ -48,10 +51,13 @@ public class chatActivity extends AppCompatActivity {
         setTitle("Login as "+ currentEmail + " Chat with "+ receiveUser);
 
 
-
-        FirebaseDatabase.getInstance().getReference().child("users").child(receiveLogInUser[0]).child("messages").addListenerForSingleValueEvent(new ValueEventListener() {
+        arrayAdapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1,receiverMessages);
+        chatListView.setAdapter(arrayAdapter);
+        //Read Saved message from Firebase
+        FirebaseDatabase.getInstance().getReference().child("users").child(receiveLogInUser[0]).child("messages").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                receiverMessages.clear();
                 for(DataSnapshot messageFireBase : dataSnapshot.getChildren()){
                     String messageReceived = String.valueOf(messageFireBase.getValue());
                     if (messageReceived != null){
@@ -59,15 +65,14 @@ public class chatActivity extends AppCompatActivity {
                     }
                     Log.i("receive message" , messageReceived);
                 }
+                arrayAdapter.notifyDataSetChanged();
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) { }
         });
 
-        arrayAdapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1,receiverMessages);
-        chatListView.setAdapter(arrayAdapter);
-
     }
+    // Save messages into Firebase
     public void sendChat(View view){
 
         String[]  receiverUserEmail = receiveUser.split("\\.");

@@ -17,6 +17,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 
+
+// chat application for module 9 and module 11
 public class loginActivity extends AppCompatActivity {
     EditText emailEdit, passwordEdit;
     String email, password;
@@ -36,6 +38,7 @@ public class loginActivity extends AppCompatActivity {
         }
 
     }
+    // Sign in with Google Firebase Email Authentication
     public  void loginButton( View view){
         email = emailEdit.getText().toString();
         password = passwordEdit.getText().toString();
@@ -60,6 +63,7 @@ public class loginActivity extends AppCompatActivity {
                     });
         }
     }
+    // Sign up with Google Firebase Email Authentication
     public void SignUp(View view){
         email = emailEdit.getText().toString();
         password = passwordEdit.getText().toString();
